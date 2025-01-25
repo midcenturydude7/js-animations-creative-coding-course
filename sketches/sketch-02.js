@@ -26,7 +26,7 @@ const sketch = () => {
     const h = height * 0.1;
     let x, y;
 
-    const num = 12;
+    const num = 40;
     const radius = width * 0.3;
 
     for (let i = 0; i < num; i++) {
@@ -57,8 +57,8 @@ const sketch = () => {
         0,
         0,
         radius * random.range(0.7, 1.3),
-        slice * random.range(0, -0.5),
-        slice * random.range(0, 0.5)
+        slice * random.range(1, -8),
+        slice * random.range(1, 5)
       );
       context.stroke();
       context.restore();
