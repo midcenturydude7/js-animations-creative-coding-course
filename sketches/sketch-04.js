@@ -1,5 +1,6 @@
-import canvasSketch from "canvas-sketch";
-import { random, math } from "canvas-sketch-util";
+const canvasSketch = require("canvas-sketch");
+const { random, math } = require("canvas-sketch-util");
+const Tweakpane = require("tweakpane");
 
 const settings = {
   dimensions: [1080, 1080],
