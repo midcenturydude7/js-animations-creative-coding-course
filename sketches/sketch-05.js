@@ -1,4 +1,5 @@
 const canvasSketch = require("canvas-sketch");
+const random = require("canvas-sketch-util/random");
 
 const settings = {
   dimensions: [1080, 1080],
@@ -26,7 +27,7 @@ const sketch = ({ context, width, height }) => {
     typeContext.fillStyle = "black";
     typeContext.fillRect(0, 0, cols, rows);
 
-    fontSize = cols;
+    fontSize = cols * 1.2;
 
     typeContext.fillStyle = "white";
     typeContext.font = `${fontSize}px ${fontFamily}`;
@@ -54,7 +55,13 @@ const sketch = ({ context, width, height }) => {
 
     const typeData = typeContext.getImageData(0, 0, cols, rows).data;
 
-    context.drawImage(typeCanvas, 0, 0);
+    context.fillStyle = "black";
+    context.fillRect(0, 0, width, height);
+
+    context.textBaseLine = "middle";
+    context.textAlign = "center";
+
+    // context.drawImage(typeCanvas, 0, 0);
 
     for (let i = 0; i < numCells; i++) {
       const col = i % cols;
@@ -68,7 +75,12 @@ const sketch = ({ context, width, height }) => {
       const b = typeData[i * 4 + 2];
       const a = typeData[i * 4 + 3];
 
-      context.fillStyle = `rgba(${r}, ${g}, ${b}, ${a / 255})`;
+      const glyph = getGlyph(r);
+
+      context.font = `${cell * 2}px ${fontFamily}`;
+      if (Math.random() < 0.1) context.font = `${cell * 6}px ${fontFamily}`;
+
+      context.fillStyle = "white";
 
       context.save();
       context.translate(x, y);
@@ -76,13 +88,22 @@ const sketch = ({ context, width, height }) => {
 
       // context.fillRect(0, 0, cell, cell);
 
-      context.beginPath();
-      context.arc(0, 0, cell * 0.5, 0, Math.PI * 2);
-      context.fill();
+      context.fillText(glyph, 0, 0);
 
       context.restore();
     }
   };
+};
+
+const getGlyph = (v) => {
+  if (v < 50) return "";
+  if (v < 100) return ".";
+  if (v < 150) return "-";
+  if (v < 200) return "+";
+
+  const glyphs = "_= /".split("");
+
+  return random.pick(glyphs);
 };
 
 const onKeyUp = (e) => {
